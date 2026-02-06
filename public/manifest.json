@@ -1,0 +1,16 @@
+{
+  "name": "Crousz - Team Collaboration",
+  "short_name": "Crousz",
+  "description": "Manage your team's projects, tasks, and communication in one place",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}
