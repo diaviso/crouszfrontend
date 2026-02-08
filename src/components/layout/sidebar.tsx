@@ -17,6 +17,7 @@ import {
   ChevronRight,
   X,
   Sparkles,
+  FileEdit,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -40,6 +41,7 @@ export function Sidebar({ onClose }: SidebarProps) {
     { name: t('sidebar.messages'), href: '/messages', icon: MessageSquare },
     { name: t('sidebar.groups'), href: '/groups', icon: Users },
     { name: t('sidebar.calendar'), href: '/calendar', icon: CalendarDays },
+    { name: t('sidebar.editor'), href: '/editor', icon: FileEdit },
   ];
 
   return (

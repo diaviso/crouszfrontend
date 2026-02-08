@@ -43,8 +43,15 @@
     "messages": "Messages",
     "groups": "Groups",
     "calendar": "Calendar",
+    "editor": "Editor",
     "myGroups": "My Groups",
     "noGroups": "No groups yet"
+  },
+  "editor": {
+    "title": "Document Editor",
+    "export": "Export",
+    "aiAssistant": "AI Assistant",
+    "untitled": "Untitled document"
   },
   "dashboard": {
     "welcomeBack": "Welcome back, {name}!",
@@ -270,7 +277,39 @@
     "displayName": "Display Name",
     "yourName": "Your name",
     "joined": "Joined {date}",
-    "groupsBelongTo": "Groups you belong to"
+    "groupsBelongTo": "Groups you belong to",
+    "completion": "Profile completion",
+    "professionalProfile": "Professional Profile",
+    "professionalProfileDesc": "Your professional information visible to members of your groups.",
+    "notSpecified": "Not specified",
+    "nameRequired": "Name cannot be empty",
+    "updated": "Profile updated",
+    "updateError": "Failed to update profile",
+    "avatarUpdated": "Profile picture updated",
+    "avatarError": "Failed to update profile picture",
+    "avatarTooLarge": "Image must not exceed 5 MB"
+  },
+  "completeProfile": {
+    "title": "Complete your professional profile",
+    "subtitle": "To start using Crousz, please fill in your professional profile (minimum 30%).",
+    "completion": "Profile completion",
+    "ready": "Your profile is complete enough!",
+    "minimum": "Minimum 30% required to continue",
+    "professionalInfo": "Professional Information",
+    "professionalInfoDesc": "This information helps your colleagues get to know you better.",
+    "jobTitle": "Job Title / Role",
+    "jobTitlePlaceholder": "E.g.: Full-Stack Developer, Project Manager...",
+    "specialty": "Specialty / Field",
+    "specialtyPlaceholder": "E.g.: Artificial Intelligence, UX Design, Digital Marketing...",
+    "skills": "Skills",
+    "skillsPlaceholder": "Type a skill and press Enter...",
+    "bio": "Bio / About",
+    "bioPlaceholder": "Describe yourself in a few lines...",
+    "phone": "Phone",
+    "linkedin": "LinkedIn",
+    "continue": "Continue to Crousz",
+    "saved": "Profile updated!",
+    "error": "Failed to update profile"
   },
   "settings": {
     "title": "Settings",
@@ -323,5 +362,37 @@
     "isTyping": "is typing...",
     "replyingTo": "Replying to",
     "you": "You"
+  },
+  "ai": {
+    "generateWithAi": "Generate with AI",
+    "generateProject": "Generate a project with AI",
+    "generateProjectDesc": "Describe your project idea and AI will automatically generate the project with all its tasks.",
+    "describeProject": "Describe your project",
+    "promptPlaceholder": "E.g.: I want to create a task management app for a dev team. It should allow creating projects, assigning tasks, tracking progress...",
+    "promptHint": "The more detailed your description, the better the result.",
+    "promptTooShort": "Please describe your project in more detail (min. 10 characters).",
+    "examples": "Example ideas",
+    "example1": "Mobile food delivery app with real-time tracking",
+    "example2": "E-commerce website for a clothing store with online payment",
+    "example3": "Online course management platform for a university",
+    "generating": "Generating... (may take 15-30s)",
+    "generate": "Generate project",
+    "projectGenerated": "Project generated successfully!",
+    "projectCreated": "Project created successfully!",
+    "projectCreatedDesc": "AI has generated your project with all its tasks.",
+    "project": "Project",
+    "tasks": "Tasks",
+    "tasksCreated": "tasks created",
+    "viewProject": "View project"
+  },
+  "reports": {
+    "generate": "Generate report",
+    "title": "Activity Report",
+    "readyTitle": "Ready to generate report",
+    "readyDesc": "AI will analyze group data, member productivity, project progress and generate recommendations.",
+    "generateNow": "Generate report",
+    "generating": "Generating...",
+    "generatingDesc": "AI is analyzing data and preparing your report. This may take a few seconds.",
+    "error": "Unable to generate report. Please try again."
   }
 }

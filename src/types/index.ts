@@ -6,6 +6,12 @@ export interface User {
   googleId: string;
   createdAt: string;
   updatedAt: string;
+  jobTitle?: string;
+  specialty?: string;
+  skills?: string[];
+  bio?: string;
+  phone?: string;
+  linkedin?: string;
 }
 
 export type GroupRole = 'ADMIN' | 'MEMBER';

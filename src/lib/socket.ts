@@ -126,8 +126,14 @@ export function leaveGroup(groupId: string): void {
   socket?.emit('leaveGroup', { groupId });
 }
 
-export function sendMessage(content: string, groupId: string, mentions?: string[]): void {
-  socket?.emit('sendMessage', { content, groupId, mentions });
+export function sendMessage(
+  content: string,
+  groupId: string,
+  mentions?: string[],
+  replyToId?: string,
+  attachments?: { filename: string; originalName: string; mimeType: string; size: number; url: string }[],
+): void {
+  socket?.emit('sendMessage', { content, groupId, mentions, replyToId, attachments });
 }
 
 export function editMessage(messageId: string, groupId: string, content: string): void {

@@ -27,12 +27,51 @@ export function useUpdateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: { name?: string }) => {
+    mutationFn: async (data: {
+      name?: string;
+      jobTitle?: string;
+      specialty?: string;
+      skills?: string[];
+      bio?: string;
+      phone?: string;
+      linkedin?: string;
+    }) => {
       const response = await api.patch('/users/me', data);
       return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({ queryKey: ['profile-completeness'] });
+    },
+  });
+}
+
+export function useProfileCompleteness(enabled = true) {
+  return useQuery<{ percentage: number; missingFields: string[] }>({
+    queryKey: ['profile-completeness'],
+    queryFn: async () => {
+      const response = await api.get('/users/profile-completeness');
+      return response.data;
+    },
+    enabled,
+  });
+}
+
+export function useUploadAvatar() {
+  const queryClient = useQueryClient();
+
+  return useMutation<User, Error, File>({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append('avatar', file);
+      const response = await api.post('/users/me/avatar', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      queryClient.invalidateQueries({ queryKey: ['profile-completeness'] });
     },
   });
 }

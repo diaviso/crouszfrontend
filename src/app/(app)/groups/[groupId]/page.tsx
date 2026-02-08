@@ -52,12 +52,15 @@ import {
   Globe,
   Lock,
   Search,
+  Sparkles,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { CreateProjectDto } from '@/types';
 import { useTranslation } from '@/lib/i18n';
+import { GenerateProjectDialog } from '@/components/ai/generate-project-dialog';
+import { ReportDialog } from '@/components/ai/report-dialog';
 
 export default function GroupDetailPage() {
   const params = useParams();
@@ -80,6 +83,7 @@ export default function GroupDetailPage() {
   const leaveGroup = useLeaveGroup();
 
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [isAiGenerateOpen, setIsAiGenerateOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isLeaveOpen, setIsLeaveOpen] = useState(false);
   const { t } = useTranslation();
@@ -257,7 +261,18 @@ export default function GroupDetailPage() {
                   />
                 </div>
               </div>
-              <Dialog open={isCreateProjectOpen} onOpenChange={setIsCreateProjectOpen}>
+              <div className="flex gap-2">
+                <ReportDialog type="group" id={groupId} name={group?.name || ''} />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-2 rounded-xl border-violet-500/30 text-violet-500 hover:bg-violet-500/10"
+                  onClick={() => setIsAiGenerateOpen(true)}
+                >
+                  <Sparkles className="h-4 w-4" />
+                  {t('ai.generateWithAi') || 'Générer avec l\'IA'}
+                </Button>
+                <Dialog open={isCreateProjectOpen} onOpenChange={setIsCreateProjectOpen}>
                 <DialogTrigger asChild>
                   <Button size="sm" className="gap-2 rounded-xl bg-gradient-to-r from-primary to-purple-500 shadow-lg shadow-primary/20">
                     <Plus className="h-4 w-4" />
@@ -276,6 +291,7 @@ export default function GroupDetailPage() {
                   />
                 </DialogContent>
               </Dialog>
+              </div>
             </div>
 
             {projectsLoading ? (
@@ -373,6 +389,13 @@ export default function GroupDetailPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* AI Generate Project Dialog */}
+      <GenerateProjectDialog
+        groupId={groupId}
+        open={isAiGenerateOpen}
+        onOpenChange={setIsAiGenerateOpen}
+      />
     </div>
   );
 }

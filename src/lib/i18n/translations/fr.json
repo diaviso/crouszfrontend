@@ -43,8 +43,15 @@
     "messages": "Messages",
     "groups": "Groupes",
     "calendar": "Calendrier",
+    "editor": "Éditeur",
     "myGroups": "Mes groupes",
     "noGroups": "Aucun groupe"
+  },
+  "editor": {
+    "title": "Éditeur de documents",
+    "export": "Exporter",
+    "aiAssistant": "Assistant IA",
+    "untitled": "Document sans titre"
   },
   "dashboard": {
     "welcomeBack": "Bon retour, {name} !",
@@ -270,7 +277,39 @@
     "displayName": "Nom d'affichage",
     "yourName": "Votre nom",
     "joined": "Inscrit le {date}",
-    "groupsBelongTo": "Groupes auxquels vous appartenez"
+    "groupsBelongTo": "Groupes auxquels vous appartenez",
+    "completion": "Complétion du profil",
+    "professionalProfile": "Profil professionnel",
+    "professionalProfileDesc": "Vos informations professionnelles visibles par les membres de vos groupes.",
+    "notSpecified": "Non renseigné",
+    "nameRequired": "Le nom ne peut pas être vide",
+    "updated": "Profil mis à jour",
+    "updateError": "Erreur lors de la mise à jour du profil",
+    "avatarUpdated": "Photo de profil mise à jour",
+    "avatarError": "Erreur lors de la mise à jour de la photo",
+    "avatarTooLarge": "L'image ne doit pas dépasser 5 Mo"
+  },
+  "completeProfile": {
+    "title": "Complétez votre profil professionnel",
+    "subtitle": "Pour commencer à utiliser Crousz, veuillez renseigner votre profil professionnel (minimum 30%).",
+    "completion": "Complétion du profil",
+    "ready": "Votre profil est suffisamment complet !",
+    "minimum": "Minimum 30% requis pour continuer",
+    "professionalInfo": "Informations professionnelles",
+    "professionalInfoDesc": "Ces informations aident vos collègues à mieux vous connaître.",
+    "jobTitle": "Poste / Fonction",
+    "jobTitlePlaceholder": "Ex: Développeur Full-Stack, Chef de projet...",
+    "specialty": "Spécialité / Domaine",
+    "specialtyPlaceholder": "Ex: Intelligence Artificielle, Design UX, Marketing Digital...",
+    "skills": "Compétences",
+    "skillsPlaceholder": "Tapez une compétence et appuyez sur Entrée...",
+    "bio": "Bio / Présentation",
+    "bioPlaceholder": "Décrivez-vous en quelques lignes...",
+    "phone": "Téléphone",
+    "linkedin": "LinkedIn",
+    "continue": "Continuer vers Crousz",
+    "saved": "Profil mis à jour !",
+    "error": "Erreur lors de la mise à jour"
   },
   "settings": {
     "title": "Paramètres",
@@ -323,5 +362,37 @@
     "isTyping": "écrit...",
     "replyingTo": "Réponse à",
     "you": "Vous"
+  },
+  "ai": {
+    "generateWithAi": "Générer avec l'IA",
+    "generateProject": "Générer un projet avec l'IA",
+    "generateProjectDesc": "Décrivez votre idée de projet et l'IA générera automatiquement le projet avec toutes ses tâches.",
+    "describeProject": "Décrivez votre projet",
+    "promptPlaceholder": "Ex: Je veux créer une application de gestion de tâches pour une équipe de développeurs. Elle doit permettre de créer des projets, assigner des tâches, suivre l'avancement...",
+    "promptHint": "Plus votre description est détaillée, meilleur sera le résultat.",
+    "promptTooShort": "Veuillez décrire votre projet plus en détail (min. 10 caractères).",
+    "examples": "Exemples d'idées",
+    "example1": "Application mobile de livraison de repas avec suivi en temps réel",
+    "example2": "Site e-commerce pour une boutique de vêtements avec paiement en ligne",
+    "example3": "Plateforme de gestion de cours en ligne pour une université",
+    "generating": "Génération en cours... (peut prendre 15-30s)",
+    "generate": "Générer le projet",
+    "projectGenerated": "Projet généré avec succès !",
+    "projectCreated": "Projet créé avec succès !",
+    "projectCreatedDesc": "L'IA a généré votre projet avec toutes ses tâches.",
+    "project": "Projet",
+    "tasks": "Tâches",
+    "tasksCreated": "tâches créées",
+    "viewProject": "Voir le projet"
+  },
+  "reports": {
+    "generate": "Générer un rapport",
+    "title": "Rapport d'activité",
+    "readyTitle": "Prêt à générer le rapport",
+    "readyDesc": "L'IA va analyser les données du groupe, la productivité des membres, l'avancement des projets et générer des recommandations.",
+    "generateNow": "Générer le rapport",
+    "generating": "Génération en cours...",
+    "generatingDesc": "L'IA analyse les données et prépare votre rapport. Cela peut prendre quelques secondes.",
+    "error": "Impossible de générer le rapport. Veuillez réessayer."
   }
 }
