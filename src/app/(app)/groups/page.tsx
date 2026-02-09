@@ -75,7 +75,7 @@ export default function GroupsPage() {
     <div className="flex flex-col h-full">
       <Header title={t('groups.title')} />
 
-      <div className="flex-1 overflow-auto p-4 md:p-6 space-y-6 page-enter">
+      <div className="flex-1 overflow-auto p-4 md:p-6 space-y-6 page-enter mesh-gradient">
         <div className="flex flex-col sm:flex-row gap-4 justify-between">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -83,11 +83,11 @@ export default function GroupsPage() {
               placeholder={t('groups.searchGroups')}
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="pl-9 rounded-xl"
+              className="pl-9 rounded-xl border-border/50 bg-card/80 focus:bg-card"
             />
           </div>
           <Link href="/groups/new">
-            <Button className="gap-2 w-full sm:w-auto rounded-xl bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 shadow-lg shadow-primary/20">
+            <Button className="gap-2 w-full sm:w-auto rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/30 hover:-translate-y-0.5">
               <Plus className="h-4 w-4" />
               {t('groups.createGroup')}
             </Button>

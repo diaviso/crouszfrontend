@@ -31,7 +31,7 @@ export default function NewGroupPage() {
     <div className="flex flex-col h-full">
       <Header title={t('groups.createNewGroup')} />
 
-      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter">
+      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter mesh-gradient">
         <div className="max-w-2xl mx-auto space-y-6">
           <Link href="/groups">
             <Button variant="ghost" className="gap-2 rounded-xl">
@@ -41,7 +41,7 @@ export default function NewGroupPage() {
           </Link>
 
           <Card className="glass-card overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-primary via-purple-500 to-primary animate-gradient" />
+            <div className="h-[2px] bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 animate-gradient" />
             <CardHeader>
               <CardTitle>{t('groups.createNewGroup')}</CardTitle>
               <CardDescription>

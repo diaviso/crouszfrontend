@@ -67,30 +67,30 @@ export function Header({ title }: HeaderProps) {
   );
 
   return (
-    <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border/60 bg-background/80 backdrop-blur-xl px-6">
+    <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border/40 bg-background/70 backdrop-blur-2xl px-6">
       {title && (
-        <h1 className="text-lg font-semibold text-foreground">
+        <h1 className="text-lg font-semibold text-foreground tracking-tight">
           {title}
         </h1>
       )}
 
-      <div className="ml-auto flex items-center gap-1.5">
+      <div className="ml-auto flex items-center gap-2">
         {/* Search */}
         <div className="relative hidden md:block" ref={searchRef}>
           <div className={cn(
-            'relative transition-all duration-300',
+            'relative transition-all duration-400',
             isSearchFocused ? 'w-80' : 'w-64'
           )}>
             <Search className={cn(
-              'absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors duration-200',
+              'absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transition-colors duration-300',
               isSearchFocused ? 'text-indigo-500' : 'text-muted-foreground'
             )} />
             <Input
               type="search"
               placeholder={t('common.search') || 'Search...'}
               className={cn(
-                'h-9 pl-9 rounded-lg border-border bg-muted/50 text-sm transition-all duration-300',
-                'focus:bg-background focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/50'
+                'h-9 pl-9 rounded-xl border-border/50 bg-muted/40 text-sm transition-all duration-300',
+                'focus:bg-background focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500/30 focus:shadow-lg focus:shadow-indigo-500/5'
               )}
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setIsSearchOpen(true); }}
@@ -100,7 +100,7 @@ export function Header({ title }: HeaderProps) {
           </div>
 
           {isSearchOpen && searchQuery.length >= 2 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-lg shadow-xl max-h-80 overflow-y-auto z-50 animate-slide-down">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-card/95 backdrop-blur-2xl border border-border/50 rounded-xl shadow-2xl shadow-black/10 max-h-80 overflow-y-auto z-50 animate-slide-down">
               {searchLoading ? (
                 <div className="flex items-center justify-center py-8">
                   <Loader2 className="h-5 w-5 animate-spin text-primary" />
@@ -109,15 +109,16 @@ export function Header({ title }: HeaderProps) {
                 <div className="py-2">
                   {searchResults!.groups.length > 0 && (
                     <div>
-                      <p className="px-3 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Groups</p>
+                      <p className="px-3 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">Groups</p>
                       {searchResults!.groups.map((g) => (
                         <button
                           key={g.id}
-                          className="w-full flex items-center gap-3 px-3 py-2 hover:bg-muted text-left transition-colors duration-150"
+                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-muted/50 text-left transition-all duration-200 rounded-lg mx-1"
+                          style={{ width: 'calc(100% - 8px)' }}
                           onClick={() => handleResultClick(`/groups/${g.id}`)}
                         >
-                          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-indigo-100 dark:bg-indigo-900/50">
-                            <Users className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10">
+                            <Users className="h-4 w-4 text-indigo-500" />
                           </div>
                           <div className="min-w-0">
                             <p className="text-sm font-medium truncate">{g.name}</p>
@@ -129,15 +130,16 @@ export function Header({ title }: HeaderProps) {
                   )}
                   {searchResults!.projects.length > 0 && (
                     <div>
-                      <p className="px-3 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Projects</p>
+                      <p className="px-3 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">Projects</p>
                       {searchResults!.projects.map((p) => (
                         <button
                           key={p.id}
-                          className="w-full flex items-center gap-3 px-3 py-2 hover:bg-muted text-left transition-colors duration-150"
+                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-muted/50 text-left transition-all duration-200 rounded-lg mx-1"
+                          style={{ width: 'calc(100% - 8px)' }}
                           onClick={() => handleResultClick(`/groups/${p.groupId}/projects/${p.id}`)}
                         >
-                          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-emerald-100 dark:bg-emerald-900/50">
-                            <FolderKanban className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10">
+                            <FolderKanban className="h-4 w-4 text-emerald-500" />
                           </div>
                           <div className="min-w-0">
                             <p className="text-sm font-medium truncate">{p.name}</p>
@@ -149,15 +151,16 @@ export function Header({ title }: HeaderProps) {
                   )}
                   {searchResults!.tasks.length > 0 && (
                     <div>
-                      <p className="px-3 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Tasks</p>
+                      <p className="px-3 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">Tasks</p>
                       {searchResults!.tasks.map((t) => (
                         <button
                           key={t.id}
-                          className="w-full flex items-center gap-3 px-3 py-2 hover:bg-muted text-left transition-colors duration-150"
+                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-muted/50 text-left transition-all duration-200 rounded-lg mx-1"
+                          style={{ width: 'calc(100% - 8px)' }}
                           onClick={() => handleResultClick(`/groups/${t.project?.groupId}/projects/${t.projectId}`)}
                         >
-                          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-amber-100 dark:bg-amber-900/50">
-                            <ListTodo className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10">
+                            <ListTodo className="h-4 w-4 text-amber-500" />
                           </div>
                           <div className="min-w-0">
                             <p className="text-sm font-medium truncate">{t.title}</p>
@@ -169,8 +172,8 @@ export function Header({ title }: HeaderProps) {
                   )}
                 </div>
               ) : (
-                <div className="py-6 text-center">
-                  <Search className="h-6 w-6 text-muted-foreground/30 mx-auto mb-2" />
+                <div className="py-8 text-center">
+                  <Search className="h-6 w-6 text-muted-foreground/20 mx-auto mb-2" />
                   <p className="text-xs text-muted-foreground">
                     No results for &quot;{searchQuery}&quot;
                   </p>
@@ -186,22 +189,22 @@ export function Header({ title }: HeaderProps) {
         {/* Language switcher */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
+            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg hover:bg-muted/50">
               <Globe className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="min-w-32">
+          <DropdownMenuContent align="end" className="min-w-32 glass-card">
             <DropdownMenuLabel>{t('common.language')}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => setLocale('fr')}
-              className={cn('cursor-pointer gap-2', locale === 'fr' && 'bg-primary/10 text-primary')}
+              className={cn('cursor-pointer gap-2 rounded-lg', locale === 'fr' && 'bg-primary/10 text-primary')}
             >
               FR {t('common.french')}
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => setLocale('en')}
-              className={cn('cursor-pointer gap-2', locale === 'en' && 'bg-primary/10 text-primary')}
+              className={cn('cursor-pointer gap-2 rounded-lg', locale === 'en' && 'bg-primary/10 text-primary')}
             >
               EN {t('common.english')}
             </DropdownMenuItem>
@@ -211,16 +214,16 @@ export function Header({ title }: HeaderProps) {
         {/* User menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
+            <Button variant="ghost" className="relative h-9 w-9 rounded-full ring-2 ring-transparent hover:ring-indigo-500/20 transition-all duration-300">
+              <Avatar className="h-9 w-9">
                 <AvatarImage src={user?.avatar} alt={user?.name} />
-                <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-xs font-semibold">
+                <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-violet-600 text-white text-xs font-semibold">
                   {user?.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-52" align="end">
+          <DropdownMenuContent className="w-52 glass-card" align="end">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-semibold">{user?.name}</p>
@@ -229,20 +232,20 @@ export function Header({ title }: HeaderProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/profile" className="cursor-pointer gap-2">
+              <Link href="/profile" className="cursor-pointer gap-2 rounded-lg">
                 <User className="h-4 w-4" />
                 {t('auth.profile')}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/settings" className="cursor-pointer gap-2">
+              <Link href="/settings" className="cursor-pointer gap-2 rounded-lg">
                 <Settings className="h-4 w-4" />
                 {t('common.settings')}
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-destructive cursor-pointer gap-2"
+              className="text-destructive cursor-pointer gap-2 rounded-lg"
               onClick={() => logout()}
             >
               <LogOut className="h-4 w-4" />

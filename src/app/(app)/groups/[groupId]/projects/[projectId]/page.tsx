@@ -136,7 +136,7 @@ export default function ProjectDetailPage() {
     <div className="flex flex-col h-full">
       <Header />
 
-      <div className="flex-1 overflow-auto p-4 md:p-6 space-y-6 page-enter">
+      <div className="flex-1 overflow-auto p-4 md:p-6 space-y-6 page-enter mesh-gradient">
         {/* Header */}
         <div className="flex flex-col sm:flex-row gap-4 justify-between">
           <div className="flex items-center gap-4">

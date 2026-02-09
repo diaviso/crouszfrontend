@@ -79,7 +79,7 @@ export default function EditorPage() {
   const { user } = useAuthStore();
 
   const { data: documents, isLoading: docsLoading } = useDocuments();
-  const { data: activeDoc } = useDocument(activeDocId);
+  const { data: activeDoc, refetch: refetchActiveDoc } = useDocument(activeDocId);
   const createDoc = useCreateDocument();
   const updateDoc = useUpdateDocument();
   const deleteDoc = useDeleteDocument();
@@ -88,17 +88,16 @@ export default function EditorPage() {
   const { data: savedHeader } = useDocumentHeader();
   const updateHeader = useUpdateDocumentHeader();
 
-  // Load document content into editor when opening
+  // Load document content into editor when opening or when data refreshes
   useEffect(() => {
     if (activeDoc && editor) {
       const currentContent = editor.getHTML();
-      // Only set content if it differs (avoid cursor jump)
-      if (currentContent !== activeDoc.content && activeDoc.content) {
-        editor.commands.setContent(activeDoc.content);
+      if (currentContent !== activeDoc.content) {
+        editor.commands.setContent(activeDoc.content || '');
       }
       setDocTitle(activeDoc.title);
     }
-  }, [activeDoc?.id]);
+  }, [activeDoc, editor]);
 
   // Load header setting
   useEffect(() => {
@@ -119,10 +118,19 @@ export default function EditorPage() {
     }
   };
 
-  const handleOpenDoc = (doc: Document) => {
-    setActiveDocId(doc.id);
+  const handleOpenDoc = async (doc: Document) => {
+    // If reopening the same doc, force a refetch cycle
+    if (activeDocId === doc.id) {
+      await refetchActiveDoc();
+    } else {
+      setActiveDocId(doc.id);
+    }
     setDocTitle(doc.title);
     setShowAi(false);
+    // Immediately set content from list data, useEffect will update if server data differs
+    if (editor && doc.content) {
+      editor.commands.setContent(doc.content);
+    }
   };
 
   const handleSave = async () => {
@@ -197,11 +205,43 @@ export default function EditorPage() {
     }
 
     const docx = await import('docx');
-    const { Document: DocxDocument, Packer, Paragraph, TextRun, HeadingLevel, Table: DocxTable, TableRow: DocxTableRow, TableCell: DocxTableCell, WidthType, BorderStyle, AlignmentType } = docx;
+    const { Document: DocxDocument, Packer, Paragraph, TextRun, HeadingLevel, Table: DocxTable, TableRow: DocxTableRow, TableCell: DocxTableCell, WidthType, BorderStyle, AlignmentType, ImageRun } = docx;
     const { saveAs } = await import('file-saver');
 
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
+
+    // Helper: convert base64 data URL to Uint8Array
+    const dataUrlToUint8Array = (dataUrl: string): Uint8Array => {
+      const base64 = dataUrl.split(',')[1];
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      return bytes;
+    };
+
+    // Helper: get image dimensions from base64 by loading into an Image object
+    const getImageDimensions = (src: string): Promise<{ width: number; height: number }> => {
+      return new Promise((resolve) => {
+        const img = new window.Image();
+        img.onload = () => {
+          const maxW = 600;
+          const maxH = 400;
+          let w = img.naturalWidth || 400;
+          let h = img.naturalHeight || 300;
+          if (w > maxW) { h = h * (maxW / w); w = maxW; }
+          if (h > maxH) { w = w * (maxH / h); h = maxH; }
+          resolve({ width: Math.round(w), height: Math.round(h) });
+        };
+        img.onerror = () => resolve({ width: 400, height: 300 });
+        img.src = src;
+      });
+    };
+
+    // Helper: find all <img> in an element
+    const findImages = (el: HTMLElement): HTMLImageElement[] => {
+      return Array.from(el.querySelectorAll('img'));
+    };
 
     const children: any[] = [];
 
@@ -241,7 +281,7 @@ export default function EditorPage() {
     };
 
     // Walk through DOM nodes
-    const processNode = (node: Node) => {
+    const processNode = async (node: Node): Promise<void> => {
       if (node.nodeType === Node.TEXT_NODE) {
         const text = node.textContent?.trim();
         if (text) {
@@ -271,8 +311,33 @@ export default function EditorPage() {
           spacing: { before: 200, after: 100 },
         }));
       } else if (tag === 'p') {
-        const runs = extractRuns(el);
-        children.push(new Paragraph({ children: runs, spacing: { after: 100 } }));
+        // Check if this <p> contains images
+        const imgs = findImages(el);
+        if (imgs.length > 0) {
+          // Process text content first (if any besides images)
+          const textContent = el.textContent?.trim();
+          if (textContent) {
+            const runs = extractRuns(el);
+            children.push(new Paragraph({ children: runs, spacing: { after: 100 } }));
+          }
+          // Then process each image
+          for (const img of imgs) {
+            const src = img.getAttribute('src') || '';
+            if (src.startsWith('data:image/')) {
+              try {
+                const imgData = dataUrlToUint8Array(src);
+                const dims = await getImageDimensions(src);
+                children.push(new Paragraph({
+                  children: [new ImageRun({ data: imgData, transformation: dims, type: 'png' })],
+                  spacing: { before: 100, after: 100 },
+                }));
+              } catch { /* skip */ }
+            }
+          }
+        } else {
+          const runs = extractRuns(el);
+          children.push(new Paragraph({ children: runs, spacing: { after: 100 } }));
+        }
       } else if (tag === 'ul' || tag === 'ol') {
         const items = el.querySelectorAll(':scope > li');
         items.forEach((li, idx) => {
@@ -298,6 +363,18 @@ export default function EditorPage() {
           indent: { left: 720 },
           spacing: { after: 100 },
         }));
+      } else if (tag === 'img') {
+        const src = el.getAttribute('src') || '';
+        if (src.startsWith('data:image/')) {
+          try {
+            const imgData = dataUrlToUint8Array(src);
+            const dims = await getImageDimensions(src);
+            children.push(new Paragraph({
+              children: [new ImageRun({ data: imgData, transformation: dims, type: 'png' })],
+              spacing: { before: 100, after: 100 },
+            }));
+          } catch { /* skip broken images */ }
+        }
       } else if (tag === 'hr') {
         children.push(new Paragraph({ children: [new TextRun({ text: '─'.repeat(50), size: 16, color: 'CCCCCC' })] }));
       } else if (tag === 'table') {
@@ -340,11 +417,15 @@ export default function EditorPage() {
           children.push(new Paragraph({ children: [], spacing: { after: 100 } }));
         }
       } else {
-        el.childNodes.forEach((child) => processNode(child));
+        for (const child of Array.from(el.childNodes)) {
+          await processNode(child);
+        }
       }
     };
 
-    tempDiv.childNodes.forEach((child) => processNode(child));
+    for (const child of Array.from(tempDiv.childNodes)) {
+      await processNode(child);
+    }
 
     const doc = new DocxDocument({
       sections: [{ children }],
@@ -390,7 +471,37 @@ export default function EditorPage() {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = htmlContent;
 
-    const processNodePDF = (node: Node) => {
+    // Helper: load image dimensions from data URL
+    const getImgDimsPDF = (src: string): Promise<{ w: number; h: number }> => {
+      return new Promise((resolve) => {
+        const img = new window.Image();
+        img.onload = () => {
+          const maxW = pageWidth - margin * 2;
+          let w = img.naturalWidth || 200;
+          let h = img.naturalHeight || 150;
+          w = w / 3.78; h = h / 3.78;
+          if (w > maxW) { h = h * (maxW / w); w = maxW; }
+          const maxH = 120;
+          if (h > maxH) { w = w * (maxH / h); h = maxH; }
+          resolve({ w, h });
+        };
+        img.onerror = () => resolve({ w: 60, h: 40 });
+        img.src = src;
+      });
+    };
+
+    const addImageToPDF = async (src: string) => {
+      if (!src.startsWith('data:image/')) return;
+      try {
+        const { w, h } = await getImgDimsPDF(src);
+        addPageIfNeeded(h + 5);
+        const fmt = src.includes('image/png') ? 'PNG' : 'JPEG';
+        doc.addImage(src, fmt, margin, y, w, h);
+        y += h + 5;
+      } catch { /* skip */ }
+    };
+
+    const processNodePDF = async (node: Node): Promise<void> => {
       if (node.nodeType === Node.TEXT_NODE) {
         const text = node.textContent?.trim();
         if (text) {
@@ -419,12 +530,29 @@ export default function EditorPage() {
         y += 8;
         doc.setTextColor(0, 0, 0);
       } else if (tag === 'p') {
-        addPageIfNeeded(8);
-        doc.setFontSize(11);
-        doc.setFont('helvetica', 'normal');
-        const lines = doc.splitTextToSize(el.textContent || '', pageWidth - margin * 2);
-        doc.text(lines, margin, y);
-        y += lines.length * 5 + 3;
+        // Check for images inside <p>
+        const imgs = Array.from(el.querySelectorAll('img'));
+        if (imgs.length > 0) {
+          const textContent = el.textContent?.trim();
+          if (textContent) {
+            addPageIfNeeded(8);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            const lines = doc.splitTextToSize(textContent, pageWidth - margin * 2);
+            doc.text(lines, margin, y);
+            y += lines.length * 5 + 3;
+          }
+          for (const img of imgs) {
+            await addImageToPDF(img.getAttribute('src') || '');
+          }
+        } else {
+          addPageIfNeeded(8);
+          doc.setFontSize(11);
+          doc.setFont('helvetica', 'normal');
+          const lines = doc.splitTextToSize(el.textContent || '', pageWidth - margin * 2);
+          doc.text(lines, margin, y);
+          y += lines.length * 5 + 3;
+        }
       } else if (tag === 'ul' || tag === 'ol') {
         el.querySelectorAll(':scope > li').forEach((li, idx) => {
           addPageIfNeeded(6);
@@ -475,6 +603,8 @@ export default function EditorPage() {
           theme: 'grid',
         });
         y = (doc as any).lastAutoTable.finalY + 6;
+      } else if (tag === 'img') {
+        await addImageToPDF(el.getAttribute('src') || '');
       } else if (tag === 'hr') {
         addPageIfNeeded(6);
         doc.setDrawColor(200, 200, 200);
@@ -482,11 +612,15 @@ export default function EditorPage() {
         doc.line(margin, y, pageWidth - margin, y);
         y += 6;
       } else {
-        el.childNodes.forEach((child) => processNodePDF(child));
+        for (const child of Array.from(el.childNodes)) {
+          await processNodePDF(child);
+        }
       }
     };
 
-    tempDiv.childNodes.forEach((child) => processNodePDF(child));
+    for (const child of Array.from(tempDiv.childNodes)) {
+      await processNodePDF(child);
+    }
 
     doc.save(`${docTitle.replace(/\s+/g, '_')}.pdf`);
     toast.success('Document exporté en PDF');
@@ -500,12 +634,14 @@ export default function EditorPage() {
     return (
       <div className="flex flex-col h-full">
         <Header />
-        <div className="p-6 max-w-5xl mx-auto w-full overflow-y-auto flex-1">
+        <div className="p-6 max-w-5xl mx-auto w-full overflow-y-auto flex-1 mesh-gradient">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-3">
-                <FileEdit className="h-7 w-7 text-primary" />
+                <div className="p-2 rounded-xl bg-gradient-to-br from-indigo-500/15 to-violet-500/15">
+                  <FileEdit className="h-6 w-6 text-indigo-500" />
+                </div>
                 Éditeur de documents
               </h1>
               <p className="text-sm text-muted-foreground mt-1">
@@ -517,7 +653,7 @@ export default function EditorPage() {
                 <Settings className="h-4 w-4" />
                 En-tête
               </Button>
-              <Button className="gap-2 rounded-xl bg-gradient-to-r from-primary to-purple-600" onClick={handleCreateNew} disabled={createDoc.isPending}>
+              <Button className="gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-lg shadow-indigo-500/20 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5" onClick={handleCreateNew} disabled={createDoc.isPending}>
                 {createDoc.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
                 Nouveau document
               </Button>
@@ -532,7 +668,7 @@ export default function EditorPage() {
                 <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
               </div>
             ) : myDocs.length === 0 ? (
-              <div className="text-center py-12 border border-dashed border-border/50 rounded-2xl">
+              <div className="text-center py-12 border border-dashed border-border/30 rounded-2xl bg-card/30">
                 <FileText className="h-10 w-10 text-muted-foreground/40 mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">Aucun document. Créez votre premier document !</p>
               </div>
@@ -541,7 +677,7 @@ export default function EditorPage() {
                 {myDocs.map((doc) => (
                   <div
                     key={doc.id}
-                    className="group relative p-4 rounded-xl border border-border/50 hover:border-primary/30 hover:bg-muted/30 transition-all cursor-pointer"
+                    className="group relative p-4 rounded-xl border border-border/40 hover:border-indigo-500/30 hover:bg-card/80 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300 cursor-pointer hover:-translate-y-0.5"
                     onClick={() => handleOpenDoc(doc)}
                   >
                     <div className="flex items-start justify-between mb-2">

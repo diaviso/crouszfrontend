@@ -114,12 +114,14 @@ export default function ProfilePage() {
     <div className="flex flex-col h-full">
       <Header title={t('profile.title')} />
 
-      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter">
+      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter mesh-gradient">
         <div className="max-w-2xl mx-auto space-y-6 stagger-children">
           {/* Profile Card */}
           <Card className="glass-card overflow-hidden">
             {/* Banner gradient */}
-            <div className="h-24 bg-gradient-to-r from-primary via-purple-500 to-primary animate-gradient" />
+            <div className="h-28 bg-gradient-to-r from-indigo-600 via-violet-500 to-purple-600 animate-gradient relative overflow-hidden">
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M20 20h20v20H20zM0 0h20v20H0z\'/%3E%3C/g%3E%3C/svg%3E')] opacity-30" />
+            </div>
             <CardHeader className="-mt-12">
               <div className="flex items-end justify-between">
                 <div className="relative group">

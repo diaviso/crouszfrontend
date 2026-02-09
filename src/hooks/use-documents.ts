@@ -37,6 +37,8 @@ export function useDocument(id: string | null) {
       return res.data;
     },
     enabled: !!id,
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 }
 

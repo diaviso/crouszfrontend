@@ -72,7 +72,7 @@ export function TaskCard({ task, groupMembers = [] }: TaskCardProps) {
   return (
     <>
       <Card
-        className="bg-card/80 backdrop-blur-sm shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 cursor-pointer border-border/50 group/card"
+        className="bg-card/90 backdrop-blur-sm shadow-sm hover:shadow-xl hover:shadow-primary/8 transition-all duration-400 cursor-pointer border-border/40 group/card hover:-translate-y-0.5 rounded-xl"
         onClick={() => setIsDetailOpen(true)}
       >
         <CardHeader className="p-3 pb-2">

@@ -89,9 +89,9 @@ export default function MessagesPage() {
 
       <div className="flex-1 flex overflow-hidden">
         {/* Conversation List */}
-        <div className="w-80 border-r border-border flex flex-col bg-card/50">
+        <div className="w-80 border-r border-border/40 flex flex-col bg-card/30 backdrop-blur-sm">
           {/* Search and New Chat */}
-          <div className="p-3 space-y-2 border-b border-border">
+          <div className="p-3 space-y-2 border-b border-border/40">
             <div className="flex gap-2">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -104,7 +104,7 @@ export default function MessagesPage() {
               </div>
               <Dialog open={newChatOpen} onOpenChange={setNewChatOpen}>
                 <DialogTrigger asChild>
-                  <Button size="icon" className="h-9 w-9 bg-indigo-600 hover:bg-indigo-700">
+                  <Button size="icon" className="h-9 w-9 bg-gradient-to-br from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 shadow-lg shadow-indigo-500/20 rounded-xl">
                     <Plus className="h-4 w-4" />
                   </Button>
                 </DialogTrigger>
@@ -184,10 +184,10 @@ export default function MessagesPage() {
                     <button
                       key={conv.id}
                       onClick={() => setSelectedConversation(conv)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
                         isSelected
-                          ? 'bg-indigo-100 dark:bg-indigo-900/30'
-                          : 'hover:bg-muted'
+                          ? 'bg-indigo-500/10 border border-indigo-500/20 shadow-sm'
+                          : 'hover:bg-muted/50 border border-transparent'
                       }`}
                     >
                       <div className="relative">
@@ -254,10 +254,13 @@ export default function MessagesPage() {
               currentUser={currentUser!}
             />
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground">
-              <MessageSquare className="h-16 w-16 mb-4 opacity-30" />
+            <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground mesh-gradient">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-full bg-indigo-500/10 blur-2xl animate-pulse-ring" />
+                <MessageSquare className="h-16 w-16 mb-4 opacity-20 relative" />
+              </div>
               <p className="text-lg font-medium">{t('messages.selectConversation') || 'Select a conversation'}</p>
-              <p className="text-sm">{t('messages.selectConversationHint') || 'Choose a conversation from the list or start a new one'}</p>
+              <p className="text-sm mt-1">{t('messages.selectConversationHint') || 'Choose a conversation from the list or start a new one'}</p>
             </div>
           )}
         </div>

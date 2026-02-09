@@ -111,8 +111,8 @@ export function AppLayout({ children }: AppLayoutProps) {
       {/* Sidebar */}
       <div
         className={`
-          fixed inset-y-0 left-0 z-50 w-72 transform transition-transform duration-300 ease-out
-          lg:relative lg:translate-x-0 lg:w-72
+          fixed inset-y-0 left-0 z-50 w-[270px] transform transition-transform duration-300 ease-out
+          lg:relative lg:translate-x-0 lg:w-[270px]
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}
       >
@@ -122,7 +122,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       {/* Main content */}
       <main className="flex-1 overflow-hidden flex flex-col min-w-0">
         {/* Mobile menu button */}
-        <div className="lg:hidden flex items-center p-3 border-b border-border/50">
+        <div className="lg:hidden flex items-center p-3 border-b border-border/40">
           <Button
             variant="ghost"
             size="icon"

@@ -99,7 +99,7 @@ export default function CalendarPage() {
     <div className="flex flex-col h-full">
       <Header title={t('calendar.title')} />
 
-      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter">
+      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter mesh-gradient">
         {isLoading ? (
           <div className="space-y-4">
             <Skeleton className="h-12 w-64" />

@@ -59,7 +59,7 @@ export default function SettingsPage() {
     <div className="flex flex-col h-full">
       <Header title={t('settings.title')} />
 
-      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter">
+      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter mesh-gradient">
         <div className="max-w-2xl mx-auto space-y-6 stagger-children">
           {/* Account Settings */}
           <Card className="glass-card overflow-hidden">

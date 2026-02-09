@@ -42,6 +42,7 @@ export function useCreateTask() {
     onSuccess: (_, data) => {
       queryClient.invalidateQueries({ queryKey: ['tasks', data.projectId] });
       queryClient.invalidateQueries({ queryKey: ['projects', 'detail', data.projectId] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard-stats'] });
     },
   });
 }
@@ -57,6 +58,7 @@ export function useUpdateTask() {
     onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: ['tasks', result.projectId] });
       queryClient.invalidateQueries({ queryKey: ['tasks', 'detail', result.id] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard-stats'] });
     },
   });
 }
@@ -69,8 +71,43 @@ export function useUpdateTaskStatus() {
       const response = await api.patch(`/tasks/${id}/status`, { status });
       return response.data;
     },
-    onSuccess: (result) => {
-      queryClient.invalidateQueries({ queryKey: ['tasks', result.projectId] });
+    onMutate: async ({ id, status }) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['tasks'] });
+
+      // Snapshot all task queries for rollback
+      const previousQueries = queryClient.getQueriesData<PaginatedResult<Task>>({ queryKey: ['tasks'] });
+
+      // Optimistically update all matching task queries
+      queryClient.setQueriesData<PaginatedResult<Task>>(
+        { queryKey: ['tasks'] },
+        (old) => {
+          if (!old?.data) return old;
+          return {
+            ...old,
+            data: old.data.map((task) =>
+              task.id === id ? { ...task, status } : task
+            ),
+          };
+        },
+      );
+
+      return { previousQueries };
+    },
+    onError: (_err, _vars, context) => {
+      // Rollback on error
+      if (context?.previousQueries) {
+        for (const [key, data] of context.previousQueries) {
+          queryClient.setQueryData(key, data);
+        }
+      }
+    },
+    onSettled: (result) => {
+      // Always refetch after mutation settles
+      if (result?.projectId) {
+        queryClient.invalidateQueries({ queryKey: ['tasks', result.projectId] });
+      }
+      queryClient.invalidateQueries({ queryKey: ['dashboard-stats'] });
     },
   });
 }
@@ -85,6 +122,7 @@ export function useDeleteTask() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       queryClient.invalidateQueries({ queryKey: ['projects'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard-stats'] });
     },
   });
 }

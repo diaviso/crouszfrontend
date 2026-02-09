@@ -100,15 +100,15 @@ export function NotificationBell() {
       >
         <Bell className="h-4 w-4" />
         {count > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white">
+          <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-to-br from-red-500 to-pink-500 text-[9px] font-bold text-white shadow-lg shadow-red-500/30 animate-pulse">
             {count > 9 ? '9+' : count}
           </span>
         )}
       </Button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-80 bg-card border border-border rounded-lg shadow-xl z-50 animate-slide-down">
-          <div className="flex items-center justify-between p-3 border-b border-border">
+        <div className="absolute right-0 top-full mt-2 w-80 bg-card/95 backdrop-blur-2xl border border-border/50 rounded-xl shadow-2xl shadow-black/10 z-50 animate-slide-down">
+          <div className="flex items-center justify-between p-3 border-b border-border/40">
             <h3 className="font-semibold text-sm">{t('notifications.title')}</h3>
             {count > 0 && (
               <Button

@@ -116,7 +116,7 @@ export default function GroupSettingsPage() {
     <div className="flex flex-col h-full">
       <Header title={t('groups.groupSettings')} />
 
-      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter">
+      <div className="flex-1 overflow-auto p-4 md:p-6 page-enter mesh-gradient">
         <div className="max-w-2xl mx-auto space-y-6 stagger-children">
           <div className="flex items-center gap-4">
             <Link href={`/groups/${groupId}`}>

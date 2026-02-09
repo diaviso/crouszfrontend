@@ -12,55 +12,69 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#0a0a1a]">
-      {/* Animated gradient blobs */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/30 rounded-full blur-[128px] animate-blob" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-purple-500/30 rounded-full blur-[128px] animate-blob" style={{ animationDelay: '2s' }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[100px] animate-pulse" />
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#06060e]">
+      {/* Animated gradient mesh */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[150px] animate-morph" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-violet-600/15 rounded-full blur-[130px] animate-morph" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-600/8 rounded-full blur-[120px] animate-pulse" />
+      </div>
 
       {/* Grid overlay */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.025]"
         style={{
           backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
+          backgroundSize: '80px 80px',
         }}
       />
 
+      {/* Orbiting particles */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px]" style={{ animation: 'spin-slow 25s linear infinite' }}>
+        <div className="absolute top-0 left-1/2 w-2 h-2 bg-indigo-400/60 rounded-full blur-[1px]" />
+        <div className="absolute bottom-0 right-1/2 w-1.5 h-1.5 bg-violet-400/40 rounded-full blur-[1px]" />
+      </div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px]" style={{ animation: 'counter-spin 35s linear infinite' }}>
+        <div className="absolute top-1/4 right-0 w-1.5 h-1.5 bg-purple-400/50 rounded-full blur-[1px]" />
+        <div className="absolute bottom-1/4 left-0 w-1 h-1 bg-indigo-300/30 rounded-full blur-[1px]" />
+      </div>
+
       {/* Floating particles */}
-      <div className="absolute top-20 left-20 w-2 h-2 bg-primary/60 rounded-full animate-float" />
-      <div className="absolute top-40 right-32 w-3 h-3 bg-purple-400/40 rounded-full animate-float" style={{ animationDelay: '1s' }} />
-      <div className="absolute bottom-32 left-40 w-2 h-2 bg-indigo-400/50 rounded-full animate-float" style={{ animationDelay: '3s' }} />
-      <div className="absolute top-60 right-20 w-1.5 h-1.5 bg-violet-300/40 rounded-full animate-float" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-20 left-20 w-1.5 h-1.5 bg-indigo-400/50 rounded-full animate-float" />
+      <div className="absolute top-40 right-32 w-2 h-2 bg-violet-400/30 rounded-full animate-float" style={{ animationDelay: '1.5s' }} />
+      <div className="absolute bottom-32 left-40 w-1.5 h-1.5 bg-purple-400/40 rounded-full animate-float" style={{ animationDelay: '3s' }} />
+      <div className="absolute top-60 right-20 w-1 h-1 bg-indigo-300/30 rounded-full animate-float" style={{ animationDelay: '2s' }} />
+      <div className="absolute bottom-20 right-40 w-2 h-2 bg-violet-300/20 rounded-full animate-float" style={{ animationDelay: '4s' }} />
 
-      {/* Card with 3D effect */}
-      <div className="relative z-10 animate-reveal" style={{ perspective: '1000px' }}>
-        <Card className="w-full max-w-md mx-4 border-white/10 bg-white/[0.06] backdrop-blur-xl shadow-2xl shadow-black/40 overflow-hidden">
-          {/* Top gradient line */}
-          <div className="h-1 bg-gradient-to-r from-primary via-purple-500 to-primary animate-gradient" />
+      {/* Login Card */}
+      <div className="relative z-10 animate-reveal" style={{ perspective: '1200px' }}>
+        <Card className="w-full max-w-[420px] mx-4 border-white/[0.08] bg-white/[0.04] backdrop-blur-2xl shadow-2xl shadow-black/50 overflow-hidden rounded-2xl">
+          {/* Animated top border */}
+          <div className="h-[2px] bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 animate-gradient" />
 
-          <CardHeader className="text-center space-y-6 pt-10 pb-4">
+          <CardHeader className="text-center space-y-6 pt-12 pb-4">
+            {/* Logo */}
             <div className="flex justify-center">
-              <div className="relative group">
-                <div className="absolute inset-0 rounded-2xl bg-primary/40 blur-xl group-hover:blur-2xl transition-all duration-500" />
-                <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-purple-600 shadow-2xl shadow-primary/30 transition-transform duration-500 hover:scale-110 hover:rotate-3">
+              <div className="relative group cursor-pointer">
+                <div className="absolute inset-0 rounded-2xl bg-indigo-500/30 blur-2xl animate-pulse-ring" />
+                <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-600 shadow-2xl shadow-indigo-500/30 transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-indigo-500/50">
                   <FolderKanban className="h-10 w-10 text-white" />
                 </div>
               </div>
             </div>
-            <div>
-              <CardTitle className="text-3xl font-bold text-white">
+            <div className="space-y-2">
+              <CardTitle className="text-3xl font-bold text-white tracking-tight">
                 {t('auth.welcome')}
               </CardTitle>
-              <CardDescription className="mt-3 text-base text-slate-400">
+              <CardDescription className="text-base text-slate-400/80 max-w-[280px] mx-auto">
                 {t('auth.loginSubtitle')}
               </CardDescription>
             </div>
           </CardHeader>
 
-          <CardContent className="space-y-6 px-8 pb-10">
+          <CardContent className="space-y-6 px-8 pb-12">
             <Button
-              className="w-full h-13 text-base gap-3 rounded-xl bg-white text-slate-900 hover:bg-white/90 shadow-lg shadow-white/10 transition-all duration-300 hover:shadow-xl hover:shadow-white/20 hover:scale-[1.02] active:scale-[0.98] font-semibold"
+              className="w-full h-13 text-base gap-3 rounded-xl bg-white text-slate-900 hover:bg-white/95 shadow-xl shadow-white/5 transition-all duration-400 hover:shadow-2xl hover:shadow-white/10 hover:scale-[1.02] active:scale-[0.98] font-semibold border border-white/20"
               onClick={handleGoogleLogin}
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -84,7 +98,13 @@ export default function LoginPage() {
               {t('auth.loginGoogle')}
             </Button>
 
-            <p className="text-xs text-center text-slate-500 pt-2">
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-px bg-gradient-to-r from-transparent to-white/10" />
+              <span className="text-[11px] text-slate-500 uppercase tracking-wider">Secure</span>
+              <div className="flex-1 h-px bg-gradient-to-l from-transparent to-white/10" />
+            </div>
+
+            <p className="text-[11px] text-center text-slate-500/80 leading-relaxed">
               {t('auth.terms')}
             </p>
           </CardContent>

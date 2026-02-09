@@ -9,5 +9,7 @@ export function useDashboardStats() {
       const { data } = await api.get('/users/dashboard-stats');
       return data;
     },
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 }

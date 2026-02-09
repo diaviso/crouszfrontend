@@ -43,22 +43,22 @@ const columnDefs: { status: TaskStatus; labelKey: string; icon: React.ReactNode;
     status: 'TODO',
     labelKey: 'tasks.todo',
     icon: <Circle className="h-4 w-4" />,
-    gradient: 'from-slate-500/10 to-slate-400/5',
-    borderColor: 'border-slate-300/50 dark:border-slate-600/50',
+    gradient: 'from-slate-500/8 to-slate-400/3',
+    borderColor: 'border-slate-200/60 dark:border-slate-700/40',
   },
   {
     status: 'IN_PROGRESS',
     labelKey: 'tasks.inProgress',
     icon: <Clock className="h-4 w-4 text-blue-500" />,
-    gradient: 'from-blue-500/10 to-blue-400/5',
-    borderColor: 'border-blue-300/50 dark:border-blue-600/50',
+    gradient: 'from-blue-500/8 to-blue-400/3',
+    borderColor: 'border-blue-200/60 dark:border-blue-700/40',
   },
   {
     status: 'DONE',
     labelKey: 'tasks.done',
     icon: <CheckCircle2 className="h-4 w-4 text-emerald-500" />,
-    gradient: 'from-emerald-500/10 to-emerald-400/5',
-    borderColor: 'border-emerald-300/50 dark:border-emerald-600/50',
+    gradient: 'from-emerald-500/8 to-emerald-400/3',
+    borderColor: 'border-emerald-200/60 dark:border-emerald-700/40',
   },
 ];
 
